@@ -6,6 +6,8 @@ Repository to allocate my solutions for the advent of code.
 
 Python 3.11.4
 
+The approach is solve the puzzles of Advent of Code with Python with built-in functions
+
 
 # Solutions
 
