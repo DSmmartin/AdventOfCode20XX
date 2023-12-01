@@ -42,17 +42,17 @@ def filter_numbers_over_a_limit(list, max_limit):
     return list_filtered
 
 def order_desc(list_of_numbers):
-    return list_ordered
+    return sorted(list_of_numbers, reverse=True)
 
 def order_asc(list_of_numbers):
-    return list_ordered
+    return sorted(list_of_numbers)
 
 def number_to_find(candidate):
     return SUM_NUMBER - candidate
 
 def process(list_of_numbers):
     numbers_ordered_desc = order_desc(list_of_numbers=list_of_numbers)
-    candidates_filtered = filter_numbers_over_a_limit(list=list_of_numbers, max_limit=SUM_NUMBER)
+    candidates_filtered = filter_numbers_over_a_limit(list=numbers_ordered_desc, max_limit=SUM_NUMBER)
     for number in candidates_filtered:
         target_number_to_find = number_to_find(number)
         if target_number_to_find in candidates_filtered:
