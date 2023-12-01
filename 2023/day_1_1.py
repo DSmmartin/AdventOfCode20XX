@@ -22,7 +22,7 @@ In this example, the calibration values of these four lines are 12, 38, 15, and 
 
 """
 
-with open('input') as input_file:
+with open('day_1_input1') as input_file:
     list_input = input_file.readlines()
 
 import string
