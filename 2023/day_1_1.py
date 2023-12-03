@@ -25,13 +25,16 @@ In this example, the calibration values of these four lines are 12, 38, 15, and 
 """
 import string
 
+RETURN_CHARACTER = '\n'
+FILE_INPUT = '/workspaces/AdventOfCode20XX/2023/day_1_input'
+
 def read_input_file(name):
     with open(name) as input_file:
         list_input = input_file.readlines()
     return list_input
 
 def clean_input_file(list_input):
-    return [item.strip('\n') for item in list_input]
+    return [item.strip(RETURN_CHARACTER) for item in list_input]
 
 def obtain_input_list_cleaned(file_path):
     list_input = read_input_file(file_path)
@@ -44,7 +47,7 @@ def obtain_two_digits(list_input):
 
 
 
-list_cleaned = obtain_input_list_cleaned('/workspaces/AdventOfCode20XX/2023/day_1_input1')
+list_cleaned = obtain_input_list_cleaned(FILE_INPUT)
 pair_numbers = obtain_two_digits(list_cleaned)
 result = sum(pair_numbers)
 
@@ -70,7 +73,14 @@ What is the sum of all of the calibration values?
 
 """
 
-input_raw = "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen"
+import re
+from icecream import ic
+
+# input_raw = "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen\n"
+
+with open(FILE_INPUT) as input_file:
+    input_raw = input_file.read()
+input_raw += RETURN_CHARACTER
 
 REPLACE_NUMBERS = [
     ("1", "one"),
@@ -84,16 +94,34 @@ REPLACE_NUMBERS = [
     ("9", "nine")
     ]
 
+numbers_found = {}
 
 for number_int, number_str in REPLACE_NUMBERS:
-    input_raw = input_raw.replace(number_str, number_int)
+    # ic(number_int)
+    list_position_start_number_string = [m.start() for m in re.finditer(number_str, input_raw)]
+    # ic(list_position_start_number_string)
+    strings_found_in_iteration = {position: number_int  for position in list_position_start_number_string}
+    numbers_found.update(strings_found_in_iteration)
 
-#### PROBLEM WITH NUMBER 24
+    list_position_start_number_int = [m.start() for m in re.finditer(number_int, input_raw)]
+    # ic(list_position_start_number_int)
+    strings_found_in_iteration = {position: number_int for position in list_position_start_number_int}
+    numbers_found.update(strings_found_in_iteration)
+# ic(numbers_found)
 
+list_position_start_return_character = [m.start() for m in re.finditer(RETURN_CHARACTER, input_raw)]
+# ic(list_position_start_return_character)
 
-list_translated = input_raw.split('\n')
-input_processed = clean_input_file(list_translated)
+positions_ordered = sorted(numbers_found)
 
+pair_numbers = []
+start_index = -1
+for end_index in list_position_start_return_character:
+    # ic(end_index)
+    number_index = list(filter(lambda n: start_index < n < end_index, positions_ordered))
+    pair_numbers.append(int(numbers_found.get(number_index[0]) + numbers_found.get(number_index[-1])))
+    # ic(pair_numbers)
 
-pair_numbers = obtain_two_digits(input_processed)
-result = sum(pair_numbers)
+    start_index = end_index
+
+sum(pair_numbers)
