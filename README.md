@@ -19,4 +19,4 @@ Day 1. In progress ⚒️
 ## Year 2023
 
 Day 1. ⭐⭐
-Day 2. ⭐
+Day 2. ⭐⭐
